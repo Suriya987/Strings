@@ -1,0 +1,95 @@
+A parentheses string is valid if and only if:
+
+It is the empty string,
+It can be written as AB (A concatenated with B), where A and B are valid strings, or
+It can be written as (A), where A is a valid string.
+You are given a parentheses string s. In one move, you can insert a parenthesis at any position of the string.
+
+For example, if s = "()))", you can insert an opening parenthesis to be "(()))" or a closing parenthesis to be "())))".
+Return the minimum number of moves required to make s valid.
+
+
+Example 1:
+
+Input: s = "())"
+Output: 1
+Example 2:
+
+Input: s = "((("
+Output: 3
+
+Approach : without using stack
+
+ Time complexity : O(N)
+ space complexity : O(1)
+
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        int len=s.size();
+        int openCount=0,closeCount=0;
+        for(int i=0;i<len;i++)
+        {
+              if(s[i]=='(')
+              openCount++;
+              else if(s[i]==')')
+              {
+                if(openCount>0)
+                 openCount--;
+                else
+                 closeCount++;
+              }
+        }
+
+        return openCount+closeCount;
+    }
+};
+
+Approach : using Stack opeartions
+
+Time complexity : O(N)
+Space complexity : O(N)
+
+class Solution {
+public:
+    int minAddToMakeValid(string s) {
+        stack<char>st;
+
+        for(auto ch:s)
+        {
+           
+            if(st.empty())
+            {
+                if(ch=='(' || ch==')')
+                {
+                    st.push(ch);
+                }
+            }
+            else 
+            {
+                if(ch=='(' || st.top()!='(' && ch==')')
+                {
+                    st.push(ch);
+                }
+                else if(st.top()=='(' && ch==')')
+                {
+                    st.pop();
+                }
+                
+            }
+        }
+
+        int count=0;
+        while(!st.empty())
+        {
+            if(st.top()=='(' ||st.top()==')')
+            {
+                count++;
+            }
+            st.pop();
+        }
+        return count;
+        
+    }
+};
+ 
