@@ -1,0 +1,126 @@
+Given an encoded string, return its decoded string.
+
+The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+
+You may assume that the input string is always valid; there are no extra white spaces, square brackets are well-formed, etc. Furthermore, you may assume that the original data does not contain any digits and that digits are only for those repeat numbers, k. For example, there will not be input like 3a or 2[4].
+
+The test cases are generated so that the length of the output will never exceed 105.
+
+ 
+
+Example 1:
+
+Input: s = "3[a]2[bc]"
+Output: "aaabcbc"
+Example 2:
+
+Input: s = "3[a2[c]]"
+Output: "accaccacc"
+Example 3:
+
+Input: s = "2[abc]3[cd]ef"
+Output: "abcabccdcdcdef"
+ 
+
+Constraints:
+
+1 <= s.length <= 30
+s consists of lowercase English letters, digits, and square brackets '[]'.
+s is guaranteed to be a valid input.
+All the integers in s are in the range [1, 300].
+
+
+Solution;
+
+Time complexity :
+
+Space complexity :
+
+
+
+class Solution {
+public:
+    string decodeString(string s) {
+          stack<int> integerStack;
+          stack<char> stringStack;
+          string temp="",res="";
+          int count=0;
+
+          int n=s.size();
+          for(int i=0;i<n;i++)
+          {
+            //if it num
+            //if it is [
+            //if it ]
+            // if it is char
+            count=0;
+
+            if(s[i]>='0' && s[i]<='9')
+            {
+                //we have to do for continuous ex:34 , 23 , 56
+                while(s[i]>='0' && s[i]<='9')
+                {
+                    count=count*10+s[i]-48;
+                    i++;
+                }
+                i--;
+                //after generating num push into integer stack 
+                integerStack.push(count);
+            }
+            else if(s[i]=='[')
+            {
+                //we have to check the previous one is integer 
+                if(s[i-1]>='0' && s[i-1]<='9')
+                 {
+                    stringStack.push(s[i]);
+                 }
+                 else
+                 {
+                    //if there is no num then we assume for atleast 1 time
+                    integerStack.push(1);
+                    stringStack.push(s[i]);
+                 }
+            }
+            else if(s[i]==']')
+            {
+                //we have to generate the string befoe '['
+               // count=0;
+                res="";
+                temp="";
+                //before get the count from integer stack
+                if(!integerStack.empty()){
+                  count=integerStack.top();
+                  integerStack.pop();
+                }
+
+                while(!stringStack.empty() && stringStack.top()!='[')
+                {
+                    temp=stringStack.top()+temp;
+                    stringStack.pop();
+                }
+                
+                if(!stringStack.empty() && stringStack.top()=='[')
+                  stringStack.pop();
+
+                  //generate strings
+                  for(int i=0;i<count;i++)
+                   res=temp+res;
+
+                 for(int i=0;i<res.size();i++)
+                  stringStack.push(res[i]);
+
+                  count=0;
+                  res="";
+            }
+            else
+              stringStack.push(s[i]);
+          }
+          res="";
+          while(!stringStack.empty()){
+            res=stringStack.top()+res;
+            stringStack.pop();
+          }
+          return res;
+
+    }
+};
