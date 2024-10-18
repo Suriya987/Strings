@@ -1,0 +1,50 @@
+Given a string s, find the length of the longest substring with all distinct characters. 
+
+Examples:
+
+Input: s = "geeksforgeeks"
+Output: 7
+Explanation: "eksforg" is the longest 
+substring with all distinct characters.
+Input: s = "aaa"
+Output: 1
+Explanation: "a" is the longest substring 
+with all distinct characters.
+
+
+
+Solution:
+
+Time complexity : O(N) 
+Space compelxity : O(N) or (1) - size of the map is constant
+
+int longestSubstrDistinctChars(string s) {
+      int Ans=0;
+      unordered_map<char,bool> mp;
+       int i=0,j=0,n=s.length();
+      while(j<n)
+      {
+          //loop through the string when no char is repeating
+          while(j<n and mp[s[j]]!=true)
+          {
+              mp[s[j]]=true;
+              j++;
+          }
+          
+          //if any char is repeated
+          //save the current length
+          Ans=max(Ans,j-i);
+          
+          //we have to remove the char that is matched
+          while(i<n and s[i]!=s[j])
+          {
+              mp[s[i]]=false;
+              i++;
+          }
+          
+          i++;
+          j++;
+      }
+      
+      return Ans;
+}
