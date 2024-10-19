@@ -1,0 +1,88 @@
+Given a number n and a bit number k, check if kth index bit of n is set or not. A bit is called set if it is 1. Position of set bit '1'
+should be indexed starting with 0 from LSB side in binary representation of the number.
+Note: Index is starting from 0. You just need to return true or false, driver code will take care of printing "Yes" and "No".
+
+Examples : 
+
+Input: n = 4, k = 0
+Output: No
+Explanation: Binary representation of 4 is 100, in which 0th index bit from LSB is not set. So, return false.
+Input: n = 4, k = 2
+Output: Yes
+Explanation: Binary representation of 4 is 100, in which 2nd index bit from LSB is set. So, return true.
+Input: n = 500, k = 3
+Output: No
+Explanation: Binary representation of 500 is 111110100, in which 3rd index bit from LSB is not set. So, return false.
+
+Expected Time Complexity: O(1).
+Expected Auxiliary Space: O(1).
+
+
+Soln: 
+  Brute force
+
+Time complexity : O(Log2N)
+Space complexity : O(Log2N)
+
+class Solution {
+  public:
+    // Function to check if Kth bit is set or not.
+    bool checkKthBit(int n, int k) {
+        
+         vector<int> bits;
+         
+         while(n)
+         {
+              int rem=n%2;
+              bits.push_back(rem);
+              n=n/2;
+              
+              if(n==1){
+                bits.push_back(n);
+                break;
+              }
+         }
+        
+            if(bits.size()-1>=k)
+             {
+             if(bits[k]==1)
+               return true;
+               
+             return false;
+             }
+            else
+             return false;
+    }
+};
+
+Optimized:
+
+Time complexity : O(1)
+Space complexity : O(1)
+
+using left shift
+
+ if((1<<k) & n)
+  return true;
+return false;
+
+using right shift
+  if((n>>k)&1)
+     return true;
+  return false;
+
+class Solution {
+  public:
+    // Function to check if Kth bit is set or not.
+    bool checkKthBit(int n, int k) {
+        
+        
+        if((n>>k) & 1)
+          return true;
+         return false;
+         
+        // if(n & (1<<k))
+        //   return true;
+        //  return false;
+        }
+}
