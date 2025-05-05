@@ -1,0 +1,99 @@
+Given an array of strings strs, group all anagrams together into sublists. You may return the output in any order.
+
+An anagram is a string that contains the exact same characters as another string, but the order of the characters can be different.
+
+Example 1:
+
+Input: strs = ["act","pots","tops","cat","stop","hat"]
+
+Output: [["hat"],["act", "cat"],["stop", "pots", "tops"]]
+Example 2:
+
+Input: strs = ["x"]
+
+Output: [["x"]]
+Example 3:
+
+Input: strs = [""]
+
+Output: [[""]]
+
+
+Approach 1:  Using sorting 
+
+Time complexity : O(M*NLOgN)
+Space Complexity : O(N+M)
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+
+      vector<vector<string>>result;
+      unordered_map< string , vector<string> > AnagramGroups;
+
+      int n=strs.size();
+      //sort the entire string and put into the map DS
+      for(int i=0;i<n;i++)
+      {
+          string currString=strs[i];
+          sort(currString.begin(),currString.end());
+          AnagramGroups[currString].push_back(strs[i]);
+      }
+
+      //iterate through the map and get the second part and return it
+      for(auto& it : AnagramGroups)
+      {
+        result.push_back(it.second);
+      }
+
+      return result;
+    }
+};
+
+Approach 2: Optimal 
+
+Time complexity : O(N*(K+26))  why + becoz here 26 is constant 
+Space complexity : O(n)
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+
+         //using the key to store that  strings which are having the same char present 
+        // array<int,26> counts={0};   //this is supported form c++11
+         unordered_map< string,vector<string> > anagrams;
+        int n=strs.size();
+         for(int i=0;i<n;i++)
+         {
+            array<int,26>counts={0};  //declaring the arrayof type int with 26 index with 0 
+
+            string str=strs[i];
+            for(auto & it : str)
+            {
+                counts[it-'a']++;
+            }
+
+            string key ;  //creating a key to store the strings with matching char present
+            for(int idx=0;idx<26;idx++)
+            {
+                key+="#"+to_string(counts[idx]);  
+            }
+            anagrams[key].push_back(strs[i]);
+         }
+
+         vector<vector<string>>result;
+         for(auto & it: anagrams)
+         {
+           // vector<string> tempResult;
+            ///tempResult.push_back(it.second);
+            //cout<<it.second;
+            result.push_back(it.second);
+         }
+
+     //result.push_back({"push","yes"});
+
+           return result;
+    }
+};
+
+
