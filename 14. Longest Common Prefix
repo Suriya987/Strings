@@ -1,0 +1,75 @@
+Write a function to find the longest common prefix string amongst an array of strings.
+
+If there is no common prefix, return an empty string "".
+
+Example 1:
+
+Input: strs = ["flower","flow","flight"]
+Output: "fl"
+Example 2:
+
+Input: strs = ["dog","racecar","car"]
+Output: ""
+Explanation: There is no common prefix among the input strings.
+ 
+Constraints:
+
+1 <= strs.length <= 200
+0 <= strs[i].length <= 200
+strs[i] consists of only lowercase English letters if it is non-empty.
+
+Soln:
+
+Time complexity : O(N)+O(N*L)
+Space complexity : O(1)
+
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    vector<string> word={"flower","flight","flow"};
+    
+      int n=word.size();
+      int size=INT_MAX;
+      string smallString="";
+      string Result="",tempResult="";
+      //findout the smallest string in the given vector
+      for(int i=0;i<n;i++)
+      {
+          if(size>word[i].size())
+          {
+              size=word[i].size();
+              smallString=word[i];
+          }
+          
+      }
+      tempResult=smallString;
+      for(int i=0;i<n;i++)
+      {
+          if(smallString!=word[i])
+          {
+              string tempString=word[i];
+              int idx=0;
+              int flag=0;
+              int minLen=min(tempResult.size(),tempString.size());
+              string currString="";
+              while(idx<minLen && tempResult[idx]==tempString[idx])
+              {
+                  currString+=smallString[idx];
+                  idx++;
+                  flag=1;
+              }
+              if(flag==0){
+               Result="";
+               break;
+              }
+              tempString=currString;
+              Result=tempString;
+              
+          }
+      }
+      
+      cout<<Result;
+      
+      
+}
